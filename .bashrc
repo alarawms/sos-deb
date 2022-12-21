@@ -10,13 +10,17 @@ HISTFILE="$HOME/.config/bash/bash_history"
 HISTCONTROL=ignoreboth:erasedups
 
 ## append to the history file, don't overwrite it
-shopt -s histappend
 
-## autocorrect cd misspellings
-shopt -s cdspell
+### SHOPT
+shopt -s autocd # change to named directory
+shopt -s cdspell # autocorrects cd misspellings
+shopt -s cmdhist # save multi-line commands in history as single line
+shopt -s dotglob
+shopt -s histappend # do not overwrite history
+shopt -s expand_aliases # expand aliases
+shopt -s checkwinsize # checks term size when bash regains control
+shopt -s histappend ## append to the history file, don't overwrite it
 
-## expand aliases
-shopt -s expand_aliases
 
 ## for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
 HISTSIZE=10000
@@ -73,8 +77,11 @@ if ! shopt -oq posix; then
   fi
 fi
 ## exports
-export EDITOR=nvim
-export TERMINAL="st"
+#export EDITOR=nvim
+export TERMINAL="kitty"
+export ALTERNATE_EDITOR=""                        # setting for emacsclient
+export EDITOR="emacsclient -t -a ''"              # $EDITOR use Emacs in terminal
+export VISUAL="emacsclient -c -a emacs"           # $VISUAL use Emacs in GUI mode
 export BROWSER="firefox-esr"
 export LANG=en_US.UTF-8
 
@@ -110,3 +117,32 @@ else
 fi
 
 $fetcher
+
+
+#ignore upper and lowercase when TAB completion
+bind "set completion-ignore-case on"
+
+ex ()
+{
+  if [ -f "$1" ] ; then
+    case $1 in
+      *.tar.bz2)   tar xjf $1   ;;
+      *.tar.gz)    tar xzf $1   ;;
+      *.bz2)       bunzip2 $1   ;;
+      *.rar)       unrar x $1   ;;
+      *.gz)        gunzip $1    ;;
+      *.tar)       tar xf $1    ;;
+      *.tbz2)      tar xjf $1   ;;
+      *.tgz)       tar xzf $1   ;;
+      *.zip)       unzip $1     ;;
+      *.Z)         uncompress $1;;
+      *.7z)        7z x $1      ;;
+      *.deb)       ar x $1      ;;
+      *.tar.xz)    tar xf $1    ;;
+      *.tar.zst)   unzstd $1    ;;
+      *)           echo "'$1' cannot be extracted via ex()" ;;
+    esac
+  else
+    echo "'$1' is not a valid file"
+  fi
+}
