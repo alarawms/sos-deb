@@ -1,0 +1,46 @@
+{
+  "version": 3,
+  "teams": [
+    {
+      "url": "https://mattermost.cbrc.kaust.edu.sa",
+      "name": "cbrc",
+      "index": null,
+      "order": 0,
+      "tabs": [
+        {
+          "name": "TAB_MESSAGING",
+          "order": 0,
+          "isOpen": true
+        },
+        {
+          "name": "TAB_FOCALBOARD",
+          "order": 1
+        },
+        {
+          "name": "TAB_PLAYBOOKS",
+          "order": 2
+        }
+      ]
+    }
+  ],
+  "showTrayIcon": true,
+  "trayIconTheme": "use_system",
+  "minimizeToTray": false,
+  "notifications": {
+    "flashWindow": 0,
+    "bounceIcon": true,
+    "bounceIconType": "informational"
+  },
+  "showUnreadBadge": true,
+  "useSpellChecker": true,
+  "enableHardwareAcceleration": true,
+  "autostart": true,
+  "hideOnStart": false,
+  "spellCheckerLocales": [],
+  "darkMode": false,
+  "lastActiveTeam": 0,
+  "downloadLocation": "/home/alarawms/Downloads",
+  "startInFullscreen": false,
+  "autoCheckForUpdates": true,
+  "logLevel": "info"
+}

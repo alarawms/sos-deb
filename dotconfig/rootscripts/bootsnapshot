@@ -1,0 +1,52 @@
+#!/bin/bash
+red='\033[0;31m'
+nc='\033[0m'
+yellow='\033[1;33m'
+notificon="/usr/share/icons/Adwaita/16x16/devices/computer.png"
+
+runas=$(whoami)
+# Check for root
+[ $runas != 'root' ] && printf "${red}command must be run as root...exiting ${nc}\n" && exit 0
+# Install notificaiton system if none installed
+[ -x "$(command -v notify-send)" ] || apt install dunst libnotify-dev libnotify-bin -yy
+
+bootsnapshot(){
+    case $1 in
+    root)
+        restorepoint="$(btrfs subvolume list / | awk '/root/ {print $1"="$2" "$NF}' | dmenu -i -l 10 -p "choose snapshot:")"
+
+        restoreid="$(printf $restorepoint | awk '{print $1}' | cut -d"=" -f 2)"
+
+        [ -z "$restorepoint" ] && exit 1
+
+        rootsubvolid="$(awk '/subvolid/ && /\/ / {print $4}' /etc/fstab | cut -d'=' -f 5)"
+
+        #sed -i "s/subvolid=$rootsubvolid/subvolid=$restoreid/" /etc/fstab
+        sed "s/subvolid=$rootsubvolid/subvolid=$restoreid/" /etc/fstab
+        notify-send --icon="$notificon" -t 4000 "BOOTSNAPSHOT" "changed root subvolume to $restoreid in /etc/fstab"
+
+        ;;
+    home)
+        restorepoint="$(btrfs subvolume list / | awk '/home/ {print $1"="$2" "$NF}' | dmenu -i -l 10 -p "choose snapshot:")"
+
+        restoreid="$(printf $restorepoint | awk '{print $1}' | cut -d"=" -f 2)"
+
+        homesubvolid="$(awk '/subvolid/ && /\/home/ {print $4}' /etc/fstab | cut -d'=' -f 5)"
+
+        [ -z "$restoreid" ] && exit 1
+
+        #sed -i "s/subvolid=$homesubvolid/subvolid=$restoreid/" /etc/fstab
+        sed "s/subvolid=$homesubvolid/subvolid=$restoreid/" /etc/fstab
+        notify-send --icon="$notificon" -t 4000 "BOOTSNAPSHOT" "changed home subvolume to $restoreid in /etc/fstab"
+
+        ;;
+    *)
+        printf ${red}"invalid argument:${nc}\n"
+        printf ${yellow}"valid arguments are:\n"
+        printf "root\n"
+        printf "home${nc}\n" && exit 1
+        ;;
+esac
+
+}
+bootsnapshot $1

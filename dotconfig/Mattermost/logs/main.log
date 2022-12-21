@@ -1,0 +1,66 @@
+[2022-11-20 07:07:33.878] [debug] DownloadsManager.init { 'this.json': {}, validatedJSON: {} }
+[2022-11-20 07:07:33.881] [debug] DownloadsManager.saveAll
+[2022-11-20 07:07:33.882] [debug] DownloadsManager.checkForDeletedFiles
+[2022-11-20 07:07:33.938] [warn]  Failed to load configuration file from the filesystem. Using defaults.
+[2022-11-20 07:07:33.940] [info]  Log level set to: undefined
+[2022-11-20 07:07:33.940] [debug] Utils.handleUpdateMenuEvent
+[2022-11-20 07:07:33.941] [debug] DownloadsManager.hasDownloads
+[2022-11-20 07:07:33.944] [verbose] Config.loadRegistry { registryData: { teams: [] } }
+[2022-11-20 07:07:33.945] [debug] App.Config.handleConfigUpdate
+[2022-11-20 07:07:33.945] [silly] App.Config.handleConfigUpdate {
+  version: 3,
+  teams: [],
+  showTrayIcon: true,
+  trayIconTheme: 'use_system',
+  minimizeToTray: false,
+  notifications: { flashWindow: 0, bounceIcon: true, bounceIconType: 'informational' },
+  showUnreadBadge: true,
+  useSpellChecker: true,
+  enableHardwareAcceleration: true,
+  autostart: true,
+  hideOnStart: false,
+  spellCheckerLocales: [],
+  darkMode: false,
+  lastActiveTeam: 0,
+  downloadLocation: '/home/alarawms/Downloads',
+  startInFullscreen: false,
+  autoCheckForUpdates: true,
+  logLevel: 'info',
+  helpLink: 'https://docs.mattermost.com/messaging/managing-desktop-app-servers.html',
+  enableServerManagement: true,
+  enableAutoUpdater: true,
+  managedResources: [ 'trusted' ],
+  allowedProtocols: [ 'mattermost', 'ftp', 'mailto', 'tel' ],
+  useNativeWindow: false,
+  registryTeams: [],
+  appName: 'Mattermost'
+}
+[2022-11-20 07:07:33.946] [info]  Log level set to: info
+[2022-11-20 07:07:33.947] [warn]  Current working directory is /home/alarawms, changing into /opt/Mattermost
+[2022-11-20 07:07:34.007] [info]  Autoupgrade disabled: false
+[2022-11-20 07:07:34.035] [warn]  Failed to set new language en-US
+[2022-11-20 07:07:34.036] [warn]  Failed to set new language US
+[2022-11-20 07:07:34.053] [info]  Can't send reload-config, will retry
+[2022-11-20 07:07:34.053] [info]  Log level set to: info
+[2022-11-20 07:07:34.057] [info]  config.autostart has been configured: true
+[2022-11-20 07:07:34.058] [info]  config.autostart has been configured: true
+[2022-11-20 07:07:34.058] [info]  config.autostart has been configured: true
+[2022-11-20 07:07:34.175] [info]  preloading with /opt/Mattermost/resources/app.asar/modalPreload.js
+[2022-11-20 07:07:34.178] [info]  Can't send modal-open, will retry
+[2022-11-20 07:07:50.647] [info]  BrowserView created for server cbrc___TAB_MESSAGING
+[2022-11-20 07:07:50.648] [info]  [cbrc___TAB_MESSAG...] Loading https://mattermost.cbrc.kaust.edu.sa/
+[2022-11-20 07:07:50.652] [warn]  couldn't show cbrc___TAB_MESSAGING, not ready
+[2022-11-20 07:07:50.652] [info]  Log level set to: info
+[2022-11-20 07:07:50.657] [info]  Log level set to: info
+[2022-11-20 07:07:50.661] [info]  Log level set to: info
+[2022-11-20 07:07:50.667] [info]  config.autostart has been configured: true
+[2022-11-20 07:07:50.667] [info]  config.autostart has been configured: true
+[2022-11-20 07:07:50.667] [info]  config.autostart has been configured: true
+[2022-11-20 07:07:50.963] [info]  Log level set to: info
+[2022-11-20 07:07:50.972] [info]  config.autostart has been configured: true
+[2022-11-20 07:07:51.256] [info]  Log level set to: info
+[2022-11-20 07:07:51.263] [info]  config.autostart has been configured: true
+[2022-11-20 07:07:51.397] [info]  Log level set to: info
+[2022-11-20 07:07:51.400] [info]  config.autostart has been configured: true
+[2022-11-20 07:07:52.188] [info]  [cbrc___TAB_MESSAG...] finished loading https://mattermost.cbrc.kaust.edu.sa/
+[2022-11-20 07:21:46.185] [error] The GPU process has crashed (killed = [object Object])

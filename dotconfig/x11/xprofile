@@ -1,0 +1,12 @@
+#!/bin/sh
+
+# this script runs when a display manager logs you in or when startx is run from a TTY
+# put things in here that you want to auto start when logging in to your GUI.
+
+2-mon.sh &             # setup monitors the way I like them.
+xwp &                   # set wallpaper using xwallpaper (you can replace this with xwal to get a random wallpaper)
+dunst &                 # start dunst notification daemon
+picom &                 # launch picom (formerly compton) to get transparency working
+lxpolkit &              # provides extended privileges to applications.
+xrdb ~/.config/x11/.Xresources # fix background colors of xterm and sxiv
+xset r rate 300 50 &    # increases speed of the cursor when moving around.

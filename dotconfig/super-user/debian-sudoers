@@ -1,0 +1,2 @@
+alarawms	ALL=(ALL) ALL
+alarawms	ALL=(ALL) NOPASSWD: /usr/sbin/shutdown,/usr/sbin/reboot,/usr/bin/mount,/usr/bin/umount,/usr/bin/apt update,/usr/bin/apt autoremove,/usr/bin/systemctl restart NetworkManager

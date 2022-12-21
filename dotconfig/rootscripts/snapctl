@@ -1,0 +1,199 @@
+#!/bin/bash
+
+set -e
+#number of snapshots allowed
+allowedsnapshots=10
+
+#Declare colors
+red='\033[0;31m'
+nc='\033[0m'
+yellow='\033[1;33m'
+
+#checks user
+runas=$(whoami)
+
+if [ $runas != 'root' ]; then
+    printf "${red} command must be run as root...exiting${nc}\n" && exit 1
+fi
+
+
+#Root subvolume device
+rootsubvoldevice="$(df -Th | grep btrfs | grep /$ | cut -d' ' -f 1)"
+
+#Home subvolume device
+homesubvoldevice="$(df -Th | awk '/btrfs/ && /home/' | cut -d' ' -f 1)"
+
+#Snapshot subvolume device
+snapsubvoldevice="$(df -Th | awk '/btrfs/ && /snapshot/' | cut -d' ' -f 1)"
+
+#Root subvolume
+rootsubvol="$(btrfs subvolume list / | awk '/level 5/ {print $NF}'| head -n1)"
+
+#home subvolume
+homesubvol="$(btrfs subvolume list / | awk '/level 5/ && /home/ {print $NF}')"
+
+#snapshot subvolume
+snapsubvol="$(btrfs subvolume list / | awk '/level 5/ && /snap/ {print $NF}')"
+
+#Number of root snapshots
+rootsnapnum="$(btrfs subvolume list / | awk '/snap/ && /root/' | wc -l)"
+
+#Oldest root snapshot
+oldrootsnap="$(btrfs subvolume list / | awk '/snap/ && /root/ {print $NF}' | head -n1)"
+
+#number of home snapshots
+homesnapnum="$(btrfs subvolume list / | awk '/snap/ && /home/' | wc -l)"
+
+#oldest home snapshot
+oldhomesnap="$(btrfs subvolume list / | awk '/snap/ && /home/ {print $NF}' | head -n1)"
+
+#current date
+cdt=`date +"%a-%b-%d-%Y-%T"`
+
+snapctl() {
+case $1 in
+    root)
+        # Create root snapshot
+        #mount Root subvolume device to /mnt
+        if [ -e "$rootsubvoldevice" ]; then
+            mount $rootsubvoldevice /mnt
+            printf "${yellow} mounted $rootsubvoldevice to /mnt${nc}\n"
+        else
+            printf "${red} no btrfs drives found${nc}\n" && exit 1
+        fi
+
+        #MUST be in this directory to perform task
+        cd /mnt
+
+        # Check that root subvolume is found...
+        if [ -e "$rootsubvol" ]; then
+            printf "${yellow} root subvolume found... $rootsubvol${nc}\n"
+        else
+            printf "${red} no root subvolume found... exiting${nc}\n" && cd $HOME && umount /mnt && exit 1
+        fi
+
+        # Check that snapshot subvolume is found...
+        if [ -e "$snapsubvol" ]; then
+            printf "${yellow} snapshot subvolume found$... $snapsubvol${nc}\n"
+        else
+            printf "${red} no snapshot subvolume found... exiting${nc}\n" && cd $HOME && umount /mnt && exit 1
+        fi
+
+        # Create snapshot of root subvolume and place in snapshot subvolume with date attached...
+        btrfs subvolume snapshot $rootsubvol $snapsubvol/root-$cdt
+
+        #remove a snapshot if there are more than 10
+        if [ "$rootsnapnum" -ge "$allowedsnapshots"  ]; then
+	        printf "${red} removing oldest snapshot... ${nc}\n"
+	        btrfs subvolume delete $oldrootsnap
+        else
+	        printf "${yellow} too few snapshots... ${nc}\n"
+	        printf "${yellow} not deleting anything ${nc}\n"
+        fi
+
+        cd $HOME; \
+        umount /mnt; \
+        exit 0
+        ;;
+    home)
+        if [ -e "$homesubvoldevice" ]; then
+            mount $homesubvoldevice /mnt
+            printf "${yellow} mounted $homesubvoldevice to /mnt${nc}\n"
+        else
+            printf "${red} no btrfs drives found${nc}\n" && exit 1
+        fi
+
+        #MUST be in /mnt to perform task
+        cd /mnt
+
+        # Check home subvolume exists...
+        if [ -e "$homesubvol" ]; then
+            printf "${yellow} found home subvolume...$homesubvol${nc}\n"
+        else
+            printf "${red} no home subvolume found... exiting${nc}\n" && umount /mnt && exit 1
+        fi
+
+        # check snapshot subvolume exists...
+        if [ -e "$snapsubvol" ]; then
+            printf "${yellow} found snapshot suvolume...$snapsubvol${nc}\n"
+        else
+            printf "${red} no snapshot subvolume found${nc}\n" && umount /mnt && exit 1
+        fi
+
+        #Make snapshot and place in snapshot directory
+        btrfs subvolume snapshot $homesubvol $snapsubvol/home-$cdt
+
+        #remove a home snapshot if there are more than 5
+        if [ "$homesnapnum" -ge "$allowedsnapshots" ]; then
+            printf "${red} removing oldest snapshot... ${nc}\n"
+            btrfs subvolume delete $oldhomesnap
+        else
+            printf "${yellow} too few snapshots...\n"
+            printf "not deleting anything ${nc}\n"
+        fi
+
+        cd $HOME; \
+        umount /mnt; \
+        exit 0
+        ;;
+    list)
+        #print colored output to terminal
+        printf ${red}"list of root snapshots:${yellow} $rootsnapnum ${nc}\n"
+
+        #list of root snapshots by name
+        btrfs subvolume list / | awk '/snap/ && /root/ {print $1"="$2" "$NF}'
+
+        #skip a line
+        printf "\n"
+
+        #print colored output to terminal
+        printf ${red}"list of home snapshots:${yellow} $homesnapnum ${nc}\n"
+
+        #list of home snapshots by name
+        btrfs subvolume list / | awk '/snap/ && /home/ {print $1"="$2" "$NF}'
+        ;;
+
+    delete)
+        #list all snapshots, pipe into dmenu and delete selected
+        #mount snapshot subvolume device to /mnt
+        if [ -e "$snapsubvoldevice" ]; then
+            mount $snapsubvoldevice /mnt
+            printf "${yellow} mounted $snapsubvoldevice to /mnt${nc}\n"
+        else
+            printf "${red} no btrfs drives found${nc}\n" && exit 1
+        fi
+
+        #MUST be in this directory to perform task
+        cd /mnt
+        # locate snapshot subvolume
+        if [ -e "$snapsubvol" ]; then
+            printf "${yellow} snapshot subvolume found$... $snapsubvol${nc}\n"
+        else
+            printf "${red} no snapshot subvolume found... exiting${nc}\n" && cd $HOME && umount /mnt && exit 1
+        fi
+
+        choice="$(btrfs subvolume list / | awk '/snap/ && !/level 5/ {print $NF}' | dmenu -i -l 10 -p "choose snapshot to delete: ")"
+        if [ -z "$choice" ]; then
+            printf ${red}"no choice selected. ${nc}\n"
+            cd $HOME
+            umount /mnt
+            exit 0
+        else
+            btrfs subvolume delete $choice
+            printf ${yellow}"$choice deleted. ${nc}\n"
+            cd $HOME
+            umount /mnt
+            exit 0
+        fi
+        ;;
+    *)
+        printf ${red}"invalid argument:${nc}\n"
+        printf ${yellow}"valid arguments are:\n"
+        printf "root\n"
+        printf "home\n"
+        printf "list\n"
+	printf "delete${nc}\n" && exit 1
+        ;;
+esac
+}
+snapctl $1

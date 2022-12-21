@@ -1,0 +1,6 @@
+#!/bin/bash
+
+brightness=$(light)
+bright=$( printf "%.0f" $brightness )
+echo "🌞${bright}%"
+echo "🌞${bright}%"

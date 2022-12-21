@@ -1,0 +1,24 @@
+Telemetry level is off
+Experiments are disabled, only manually opted experiments are active.
+LSP Notebooks experiment is disabled -- not using Pylance
+LSP Notebooks interactive window support is disabled -- not in LSP Notebooks experiment
+> conda info --json
+> python -c "import sys;print(sys.executable)"
+[ERROR 2022-11-16 19:13:19.588]: [Error: Command failed: python -c "import sys;print(sys.executable)"
+/bin/sh: 1: python: not found
+
+	at ChildProcess.exithandler (node:child_process:408:12)
+	at ChildProcess.emit (node:events:526:28)
+	at maybeClose (node:internal/child_process:1092:16)
+	at Socket.<anonymous> (node:internal/child_process:451:11)
+	at Socket.emit (node:events:526:28)
+	at Pipe.<anonymous> (node:net:687:12)] {
+  killed: false,
+  code: 127,
+  signal: null,
+  cmd: 'python -c "import sys;print(sys.executable)"'
+}
+> /bin/python3 ~/.vscode-oss/extensions/ms-python.python-2022.20.1-universal/pythonFiles/get_output_via_markers.py ~/.vscode-oss/extensions/ms-python.python-2022.20.1-universal/pythonFiles/interpreterInfo.py
+> /usr/bin/python3 ~/.vscode-oss/extensions/ms-python.python-2022.20.1-universal/pythonFiles/get_output_via_markers.py ~/.vscode-oss/extensions/ms-python.python-2022.20.1-universal/pythonFiles/interpreterInfo.py
+Python interpreter path: /bin/python3
+Starting Jedi language server for default.

@@ -1,0 +1,89 @@
+# Basic Settings
+set shell bash
+set shellopts '-eu'
+set ifs "\n"
+set scrolloff 8
+set preview true
+
+set hidden true
+set drawbox true
+set icons true
+set period 1
+set ignorecase true
+# Custom Functions
+cmd setbg %cp "$f" ~/.local/share/backgrounds/current-wallpaper.png && xwallpaper --zoom "$f"
+
+cmd trash %trash-put $fx
+
+cmd open ${{
+    case $(file --mime-type "$f" -bL) in
+        text/*|application/json) $EDITOR "$f";;
+        *) xdg-open "$f" ;;
+    esac
+}}
+
+cmd rename ${{
+    printf "rename $f to: "
+    read ans
+    mv $f $ans
+}}
+
+cmd mkdir $mkdir -p "$(echo $* | tr ' ' '\ ')"
+cmd touch $touch "$(echo $* | tr ' ' '\ ')"
+
+cmd delete ${{
+    clear; tput cup $(($(tput lines)/3)); tput bold
+    set -f
+    printf "%s\n\t" "$fx"
+    printf "delete?[y/N]"
+    read ans
+    [ $ans = "y" ] && rm -rf -- $fx
+}}
+
+cmd ex ${{
+  case "$f" in
+      *.zip) unzip "$f" ;;
+      *.tar.gz) tar -xzvf "$f" ;;
+      *.tar.bz2) tar -xjvf "$f" ;;
+      *.tar) tar -xvf "$f" ;;
+      *) echo "Unsupported format" ;;
+  esac
+}}
+
+# Remove some defaults
+map m
+map w
+map o
+map n
+map "'"
+map '"'
+map d
+map c
+map f
+
+# Mappings
+map A rename # at the very end
+#map c push A<c-u> # new rename
+#map I push A<c-a> # cursor at very beginning
+#map a push A<a-b><a-b><a-f> # cursor before extension
+map bg setbg
+map wp setbg
+map dd trash
+map D delete
+map . set hidden!
+map x cut
+map y copy
+map p paste
+map <enter> open
+
+# Movement
+map gr cd ~/rec
+map gd cd ~/Downloads
+map gp cd ~/Pictures
+map gc cd ~/.config
+map gsp cd ~/.config/spectrwm
+map gst cd ~/.local/src/st
+map glf cd ~/.config/lf
+map gbk cd ~/.local/share/backgrounds/
+
+

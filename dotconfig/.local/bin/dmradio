@@ -1,0 +1,99 @@
+#!/bin/bash
+# script requires dmenu, dunst, and mpv
+
+# radio station list
+menu (){
+    printf "1. 70's 80's 90's hits\n"
+    printf "2. 60's Rewind\n"
+    printf "3. 70's Rewind\n"
+    printf "4. 80's Rewind\n"
+    printf "5. 90's Hits\n"
+    printf "6. LoFi Hip Hop\n"
+    printf "7. Rock Lab Radio\n"
+    printf "8. Classic Rock\n"
+    printf "9. Reggae Hits\n"
+}
+
+start-radio() {
+    dunstify "staring dmradio" "喇playing station: $1  "
+}
+
+stop-radio(){
+    dunstify " stopping dmradio"
+}
+
+choice=$(menu | dmenu -l 10 -p "Choose Radio Station:" | cut -d"." -f1) || exit
+
+case $choice in
+    "quit")
+        stop-radio;
+        pkill -f http
+        exit
+        ;;
+
+    1)
+        pkill -f http || echo "mpv not running"
+        start-radio '70s 80s 90s hits' ;
+        mpv "https://zeno.fm/radio/rock-de-los-80/"
+        return
+        ;;
+
+    2)
+        pkill -f http || echo "mpv not running"
+        start-radio '60s Rewind' ;
+        mpv "https://zeno.fm/radio/60s-rewind/"
+        return
+        ;;
+
+    3)
+        pkill -f http || echo "mpv not running"
+        start-radio '70s Rewind' ;
+        mpv "https://zeno.fm/radio/70s-rewind/"
+        return
+        ;;
+
+    4)
+        pkill -f http || echo "mpv not running"
+        start-radio '80s Rewind' ;
+        mpv "https://zeno.fm/radio/80s-rewind/"
+        return
+        ;;
+    5)
+        pkill -f http || echo "mpv not running"
+        start-radio '90s hits' ;
+        mpv "https://zeno.fm/radio/90s-hits3d27zy0spv8uv/"
+        return
+        ;;
+    6)
+        pkill -f http || echo "mpv not running"
+        start-radio 'LoFi Hip Hop' ;
+        mpv "https://zeno.fm/radio/lofimusicradio/"
+        return
+        ;;
+    7)
+        pkill -f http || echo "mpv not running"
+        start-radio 'Rock Lab Radio' ;
+        mpv "https://zeno.fm/radio/RockLabRadio/"
+        return
+        ;;
+
+    8)
+        pkill -f http || echo "mpv not running"
+        start-radio 'Classic Rock' ;
+        mpv "https://zeno.fm/radio/classic-rockdnb2sav8qs8uv/"
+        return
+        ;;
+
+    9)
+        pkill -f http || echo "mpv not running"
+        start-radio 'Reggae Hits' ;
+        mpv "https://zeno.fm/radio/reggaeh4qhqw7g368uv/"
+        return
+        ;;
+
+    *)
+        stop-radio;
+        pkill -f http || echo "mpv not running"
+        dunstify " program stopped" && exit 0
+        ;;
+esac

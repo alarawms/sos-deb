@@ -1,0 +1,72 @@
+#!/bin/bash
+
+[ -x "$(command -v sudo)" ] && ld="sudo"
+[ -x "$(command -v doas)" ] && [ -e /etc/doas.conf ] && ld="doas"
+
+#Declare colors
+red='\033[0;31m'
+nc='\033[0m'
+yellow='\033[1;33m'
+
+vmctl() {
+    case $1 in
+    start)
+        choice="$( "$ld" virsh list --all | grep "shut off" | awk '{print $2}' | dmenu -l 20 -i -p "select VM")"
+
+        [ -z "$choice" ] && exit 0
+
+        $ld virsh start $choice && $ld virt-viewer -a $choice \
+        ;;
+    stop)
+        bell="$HOME/.local/share/icons/Gruvbox-Material-Dark/16x16/actions/bell.svg"
+        choice="$( "$ld" virsh list --all | grep running | awk '{print $2}' | dmenu -l 20 -i -p "select VM")"
+
+        [ -z "$choice" ] && exit 0
+
+        $ld virsh shutdown $choice \
+        && notify-send --icon="$bell" -t 3000 \
+        "VMSTOP" "$choice shutdown"
+        ;;
+    clone)
+        filelocation="$HOME/.local/share/virt/vm"
+        bell="$HOME/.local/share/icons/Gruvbox-Material-Dark/16x16/actions/bell.svg"
+
+        choice="$( "$ld" virsh list --all | grep "shut off" | awk '{print $2}' | dmenu -l 20 -i -p "select VM to clone")"
+
+        [ -z "$choice" ] && exit 0
+
+        newname="$( "$choice" | dmenu -i -p "New Name for VM")"
+
+        [ -z "$newname" ] && exit 0
+
+        $ld virt-clone --connect qemu:///system \
+        --original $choice \
+        --name $newname \
+        --file $filelocation/$newname.qcow2 \
+        && notify-send --icon="$bell" \
+        -t 3000 "VMCLONE" "$choice cloned to $newname"
+        ;;
+    del)
+        bell="$HOME/.local/share/icons/Gruvbox-Material-Dark/16x16/actions/bell.svg"
+
+        choice="$( "$ld" virsh list --all | grep "shut off" | awk '{print $2}' | dmenu -l 20 -i -p "select VM")"
+
+        [ -z "$choice" ] && exit 0
+
+        $ld virsh undefine $choice --remove-all-storage \
+        && notify-send --icon="$bell" \
+        -t 3000 "VMDEL" "$choice deleted"
+        ;;
+    *)
+        printf ${red}"invalid argument:${nc}\n"
+        printf ${yellow}"valid arguments are:\n"
+        printf "start\n"
+        printf "stop\n"
+        printf "clone\n"
+        printf "del${nc}\n" && exit 1
+        ;;
+
+esac
+}
+
+vmctl $1
