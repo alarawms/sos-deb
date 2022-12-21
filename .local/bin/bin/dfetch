@@ -1,0 +1,69 @@
+#!/bin/sh
+
+user="${USER}"
+hostname="${HOSTNAME:-${hostname:-$(hostname)}}"
+host="$(cat /sys/devices/virtual/dmi/id/product_name)"
+OS="$(cat /etc/os-release | cut -d'"' -f 2 | head -n1)"
+Kernel="$(uname -sr)"
+Uptime="$(uptime -p | cut -b 4-38)"
+Shell="$(basename "$SHELL")"
+RAM="$(free -h | grep Mem: | awk '{print $3 "/" $2}')"
+
+# COLORS
+c1="\e[31m" # Red
+c2="\e[32m" # Light Green
+c3="\e[33m" # Yellow
+c4="\e[34m" # Calm Blue
+c5="\e[35m" # Violet
+c6="\e[36m" # Arch Blue
+c7="\e[37m" # White
+c8="\e[38m" # Sky Blue
+c9="\e[39m" # Light Grey
+c10="\e[40m" # Dark Grey
+c20="\e[0m" # Normal
+
+# An Error echo Wrapper
+err0r()
+{
+	echo >&2 "$(tput bold; tput setaf 1)[-] ERROR: ${*}$(tput sgr0)"
+	echo ""
+	exit 86
+}
+
+
+# A Warning echo wrapper
+warn ()
+{
+	echo >&2 "$(tput bold; tput setaf 3)[!] WARNING: ${*}$)tput sgr0)"
+	echo ""
+}
+
+
+
+# A Message echo Wrapper
+msg ()
+{
+	echo "$(tput bold; tput setaf 2)[+] ${*}$(tput sgr0)"
+}
+
+
+
+echo ${c1}""
+echo '           _,met$$$$$gg.       '
+echo '       ,g$$$$$$$$$$$$$$$P.     '   ${c4}$user${c1}@${c20}$hostname${c1}
+echo '     ,g$$P""       """Y$$.".   '   ${c4}OS:  ${c20}$OS${c1}
+echo '    ,$$P"              `$$$."  '   ${c4}host:  ${c20}$host${c1}
+echo '   ,$$P       ,ggs.     `$$b:  '   ${c4}Kernel:  ${c20}$Kernel${c1}
+echo '  `d$$"     ,$P""   .    $$$   '   ${c4}Uptime:  ${c20}$Uptime${c1}
+echo '   $$P      d$"     ,    $$P   '   ${c4}Shell: ${c20}$SHELL${c1}
+echo '   $$:      $$.   -    ,d$$"   '   ${c4}RAM:  ${c20}$RAM${c1}
+echo '   $$\;      Y$b._   _,d$P     '
+echo '   Y$$.    `.`"Y$$$$P""        '
+echo '   `$$b      "-.__             '
+echo '    `Y$$                       '
+echo '     `Y$$.                     '
+echo '       `$$b.                   '
+echo '         `Y$$b.                '
+echo '            `"Y$b._            '
+echo '                `""""          '
+echo ${c20}""

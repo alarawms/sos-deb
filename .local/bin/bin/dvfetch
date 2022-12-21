@@ -1,0 +1,70 @@
+#!/bin/sh
+
+user="${USER}"
+hostname="${HOSTNAME:-${hostname:-$(hostname)}}"
+host="$(cat /sys/devices/virtual/dmi/id/product_name)"
+OS="$(cat /etc/os-release | cut -d'"' -f 2 | head -n1)"
+Kernel="$(uname -sr)"
+Uptime="$(uptime -p | cut -b 4-38)"
+#Packages="$(dpkg -l | grep -c ^i)"
+Shell="$(basename "$SHELL")"
+RAM="$(free -h | grep Mem: | awk '{print $3 "/" $2}')"
+
+# COLORS
+c1="\e[91m" # Red
+c2="\e[32m" # Light Green
+c3="\e[33m" # Yellow
+c4="\e[34m" # Calm Blue
+c5="\e[35m" # Violet
+c6="\e[36m" # Arch Blue
+c7="\e[37m" # White
+c8="\e[96m" # Cyan Blue
+c9="\e[39m" # Light Grey
+c10="\e[40m" # Dark Grey
+c11="\e[95m" # Light Purple
+c12="\e[94m" # Light Blue
+c20="\e[0m" # Normal
+
+# An Error echo Wrapper
+err0r()
+{
+	echo >&2 "$(tput bold; tput setaf 1)[-] ERROR: ${*}$(tput sgr0)"
+	echo ""
+	exit 86
+}
+
+
+# A Warning echo wrapper
+warn ()
+{
+	echo >&2 "$(tput bold; tput setaf 3)[!] WARNING: ${*}$)tput sgr0)"
+	echo ""
+}
+
+
+
+# A Message echo Wrapper
+msg ()
+{
+	echo "$(tput bold; tput setaf 2)[+] ${*}$(tput sgr0)"
+}
+
+
+
+echo ${c5}""
+echo "    .,,;;;::;,..                   "${c5}$user${c20}@${c5}$hostname${c5}
+echo "           '':ddd;:,.              "${c20}-----------${c5}
+echo "                 ''dPPd:,.         "${c5}OS:  ${c20}$OS${c5}
+echo "                     ':bSSb'.      "${c5}host:  ${c20}$host${c5}
+echo "                        'PSSSd'    "${c5}Kernel:  ${c20}$Kernel${c5}
+echo "                         .SSSSS'   "${c5}Uptime:  ${c20}$Uptime${c5}
+echo "                         ;SSSSSP   "${c5}Shell: ${c20}$Shell${c5}
+echo "                      .:PSSSSSS'   "${c5}RAM:  ${c20}$RAM${c5}
+echo "                  .,:bSSSSSSS;'    "
+echo "             .,:dPSSSSSSSSb:'      "
+echo "      .,:;dbSSSSSSSSSSPd''         "
+echo " ,dbSSSSSSSSSSSSSSb:''             "
+echo ":SSSSSSSSSSSSSb:''                 "
+echo " 'SSSSSbd:'''                      "
+echo "   '''''                           "
+echo ${c20}""

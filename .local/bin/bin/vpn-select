@@ -1,0 +1,14 @@
+#!/bin/bash
+
+runas=$(whoami)
+[ $runas != 'root' ] && notify-send "script must be run as root. exiting..." && exit 0
+
+vpnlist="/etc/openvpn/pia/*.ovpn"
+
+choice="$(ls $vpnlist | dmenu -i -l 25)"
+
+[ -z "$choice" ] && exit 0
+
+$ld cat $choice > /etc/openvpn/openvpn.conf \
+    && rc-service openvpn restart || systemctl restart openvpn \
+    && notify-send -t 3000 "VPN connecting to $choice" "restarting openvpn"

@@ -1,0 +1,24 @@
+#!/bin/bash
+
+yellow='\033[1;33m'
+red='\033[0;31m'
+nc='\033[0m'
+
+[ ! -x "$(command -v dateutils.ddiff)" ] && printf "${red}dateutils not installed. ${nc}\n" && exit 1
+
+dte="$(date '+%Y-%m-%d')"
+dis="$(stat / | grep Birth | awk '{print $2}')"
+
+days="$(dateutils.ddiff $dis $dte)"
+if [ "$days" -gt 365 ]; then
+    printf "${yellow} You haven't hopped since $dte. ${red} That's $days days. ${yellow} What a legend!!!${nc} \n"
+elif [ "$days" -gt 180 ] && [ "$days" -le 364 ]; then
+    printf "${yellow} You haven't hopped since $dte. ${red} That's $days days. ${yellow} I'm proud of you ${nc}\n"
+elif [ "$days" -ge 90 ] && [ "$days" -le 179 ]; then
+    printf "${yellow}You haven't hopped since $dte. ${red} That's $days days. ${yellow} awesome... ${nc}\n"
+elif [ "$days" -ge 30 ] && [ "$days" -le 89 ]; then
+    printf "${yellow}You haven't hopped since $dte. ${red} That's $days days. ${yellow} nice progress... ${nc}\n"
+elif [ "$days" -le 29 ]; then
+    printf "${yellow}You haven't hopped since $dte. ${red} That's $days days. ${yellow} Stay strong...${nc}\n"
+fi
+

@@ -1,0 +1,13 @@
+#!/bin/sh
+# requires scrot imagemagick and i3lock
+lokdir="$HOME/.local/share/lok"
+
+[ -e "$lokdir" ] || mkdir -p $lokdir
+
+scrot -m $lokdir/lok.png &&\
+
+convert $lokdir/lok.png -blur 0x5 $lokdir/lock.png &&\
+
+i3lock -i $lokdir/lock.png
+
+rm $lokdir/lok.png
