@@ -16,14 +16,14 @@ src_dir=$builddir/.local/src
 bin_dir=$builddir/.local/bin
 
 # Update packages list and update system
-apt update
-apt upgrade -y
+sudo apt update
+sudo apt upgrade -y
 
 # Install nala
 #apt install nala -y
 
 # Let's install each package listed in the pkglist.txt file.
-sudo apt install -yy  < pkg.list || error "Failed to install required packages."
+sudo xargs apt install -yy  < pkg.list || error "Failed to install required packages."
 
 # Installing Other less important Programs
 # Making .config and Moving config files and background to Pictures
@@ -68,12 +68,13 @@ wget https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/Meslo.zip
 unzip Meslo.zip -d /home/$username/.fonts
 chown $username:$username /home/$username/.fonts/*
 
-cp dwm.desktop /usr/share/xsessions/
-sh fonts.sh
-sh fura-mono-nerd-font.sh
-sh inconsolata-nerd-fonts.sh
-sh ubuntu-nerd-font.sh
-sh zoom.sh
+sudo cp dwm.desktop /usr/share/xsessions/
+
+./fonts.sh
+./inconsolata-nerd-font.sh
+./ubuntu-nerd-font.sh
+./zoom.sh
+./fura-mono-nerd-font.sh
 # Reloading Font
 fc-cache -vf
 # Removing zip Files

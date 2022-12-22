@@ -1,4 +1,0 @@
-rofi.theme: /usr/share/rofi/themes/Pop-Dark.rasi
-configuration {
-    show-icons: true;
-}

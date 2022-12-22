@@ -9,8 +9,7 @@ curl
 tlp 
 fzf 
 lm-sensors
-light 
-notify-osd 
+notify-osd
 libnotify-bin 
 gdebi  
 xdotool 
@@ -47,12 +46,8 @@ neovim
 nm-tray
 doas
 fonts-font-awesome
-otf-raleway
 pandoc
 pcmanfm
-qalculate-gtk
-qt5ct
-qutebrowser
 ripgrep
 sddm
 shellcheck
