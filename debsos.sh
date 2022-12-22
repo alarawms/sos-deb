@@ -23,7 +23,7 @@ apt upgrade -y
 #apt install nala -y
 
 # Let's install each package listed in the pkglist.txt file.
-sudo apt install -yy  < pkglist.txt || error "Failed to install required packages."
+sudo apt install -yy  < pkg.list || error "Failed to install required packages."
 
 # Installing Other less important Programs
 # Making .config and Moving config files and background to Pictures
@@ -68,6 +68,7 @@ wget https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/Meslo.zip
 unzip Meslo.zip -d /home/$username/.fonts
 chown $username:$username /home/$username/.fonts/*
 
+cp dwm.desktop /usr/share/xsessions/
 sh fonts.sh
 sh fura-mono-nerd-font.sh
 sh inconsolata-nerd-fonts.sh
