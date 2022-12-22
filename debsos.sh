@@ -56,6 +56,7 @@ xdg-user-dirs-update
 sudo systemctl enable tlp.service
 
 # Download Nordic Theme
+sudo mkdir -p /usr/share/themes
 cd /usr/share/themes/
 git clone https://github.com/EliverLara/Nordic.git
 
