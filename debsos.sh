@@ -68,7 +68,11 @@ wget https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/Meslo.zip
 unzip Meslo.zip -d /home/$username/.fonts
 chown $username:$username /home/$username/.fonts/*
 
-
+sh fonts.sh
+sh fura-mono-nerd-font.sh
+sh inconsolata-nerd-fonts.sh
+sh ubuntu-nerd-font.sh
+sh zoom.sh
 # Reloading Font
 fc-cache -vf
 # Removing zip Files
