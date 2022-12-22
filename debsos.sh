@@ -12,6 +12,8 @@ fi
 
 username=$(id -u -n 1000)
 builddir=$(pwd)
+src_dir=$builddir/.local/src
+bin_dir=$builddir/.local/bin
 
 # Update packages list and update system
 apt update
@@ -47,6 +49,9 @@ cp -R dotconfig/* /home/$username/.config/
 cp user-dirs.dirs /home/$username/.config
 cp user-dirs.locale /home/$username/.config
 chown -R $username:$username /home/$username
+cp doas.conf /etc/
+#update user dirs
+xdg-user-dirs-update
 
 sudo systemctl enable tlp.service
 
@@ -89,7 +94,8 @@ if z=$(curl -s 'https://install.zerotier.com/' | gpg); then echo "$z" | sudo bas
 
 ### dmenu tools
 ###
- git clone https://gitlab.com/dwt1/dmscripts.git
+cd $HOME/.local/share/
+git clone https://gitlab.com/dwt1/dmscripts.git
  cd dmscripts
  sudo make clean build
  sudo make install
