@@ -35,15 +35,17 @@ mkdir -p /home/$username/.local/src
 mkdir -p /usr/share/sddm/themes
 cp -r .local/* /home/$username/.local
 cp .Xresources /home/$username
+cp .Xresources-hidpi /home/$username
 cp .bashrc /home/$username
+cp .zshenv /home/$username
 cp .bash_profile /home/$username
 cp .xinitrc /home/$username
 cp .Xnord /home/$username
 cp -R dotconfig/* /home/$username/.config/
-cp bg.jpg /home/$username/Pictures/
 
 
-mv user-dirs.dirs /home/$username/.config
+cp user-dirs.dirs /home/$username/.config
+cp user-dirs.locale /home/$username/.config
 chown -R $username:$username /home/$username
 
 sudo systemctl enable tlp.service
@@ -74,8 +76,10 @@ cd Nordzy-cursors
 cd $builddir
 rm -rf Nordzy-cursors
 
-cd /homes/$USER/git/debian-sos/i3gnome-flashback
-sudo make install 
+
+#genome-fallback as system management in addition to i3 as a WM
+#cd /homes/$USER/git/debian-sos/i3gnome-flashback
+#sudo make install
 
 # install Zerotier 
 #

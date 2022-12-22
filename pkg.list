@@ -1,6 +1,7 @@
 feh
 exa 
-kitty 
+maim
+kitty
 rofi 
 build-essential 
 isync
@@ -19,7 +20,8 @@ emacs
 thunar 
 unzip 
 yad 
-wget 
+wget
+xwallpaper
 pulseaudio 
 pavucontrol
 adapta-gtk-theme

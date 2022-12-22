@@ -1,4 +1,0 @@
-#!/bin/sh
-DIR="$HOME/.local/share/backgrounds"
-
-feh --bg-scale $DIR/current-wallpaper.png

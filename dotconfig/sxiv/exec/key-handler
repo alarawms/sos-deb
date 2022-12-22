@@ -12,6 +12,9 @@
 # where C/M/S indicate Ctrl/Meta(Alt)/Shift modifier states and KEY is the X
 # keysym as listed in /usr/include/X11/keysymdef.h without the "XK_" prefix.
 
+
+## adopted from DTOS and modified for debain.
+##
 rotate() {
     degree="$1"
     tr '\n' '\0' | xargs -0 realpath | sort | uniq | while read file; do
