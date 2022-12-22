@@ -134,3 +134,8 @@ st.boxdraw_bold: 1
 st.boxdraw_braille: 1
 st.chscale:           1.0
 st.cwscale:           1.0
+
+! COLORS FOR SXIV
+Sxiv.foreground:   #bbc2cf
+Sxiv.background:   #282c34
+Sxiv.font: Ubuntu:style=bold:size=11

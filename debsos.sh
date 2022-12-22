@@ -54,7 +54,7 @@ git clone https://github.com/EliverLara/Nordic.git
 
 # Installing fonts
 cd $builddir 
-nala install fonts-font-awesome
+sudo apt  install fonts-font-awesome
 wget https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/FiraCode.zip
 unzip FiraCode.zip -d /home/$username/.fonts
 wget https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/Meslo.zip
@@ -83,5 +83,9 @@ curl -s 'https://raw.githubusercontent.com/zerotier/ZeroTierOne/master/doc/conta
 if z=$(curl -s 'https://install.zerotier.com/' | gpg); then echo "$z" | sudo bash; fi
 
 
-
-sudo nala install fd-find findutils ripgrep
+### dmenu tools
+###
+ git clone https://gitlab.com/dwt1/dmscripts.git
+ cd dmscripts
+ sudo make clean build
+ sudo make install
