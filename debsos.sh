@@ -1,10 +1,5 @@
 #!/bin/bash
 
-# Check if Script is Run as Root
-if [[ $EUID -ne 0 ]]; then
-  echo "You must be a root user to run this script, please run sudo ./install.sh" 2>&1
-  exit 1
-fi
 
 # Change Debian to SID Branch
 #cp /etc/apt/sources.list /etc/apt/sources.list.bak
@@ -12,8 +7,6 @@ fi
 
 username=$(id -u -n 1000)
 builddir=$(pwd)
-src_dir=$builddir/.local/src
-bin_dir=$builddir/.local/bin
 
 # Update packages list and update system
 sudo apt update
@@ -49,9 +42,7 @@ cp -R dotconfig/* /home/$username/.config/
 cp user-dirs.dirs /home/$username/.config
 cp user-dirs.locale /home/$username/.config
 chown -R $username:$username /home/$username
-cp doas.conf /etc/
-#update user dirs
-xdg-user-dirs-update
+sudo cp doas.conf /etc/
 
 sudo systemctl enable tlp.service
 
@@ -62,7 +53,6 @@ git clone https://github.com/EliverLara/Nordic.git
 
 # Installing fonts
 cd $builddir 
-sudo apt  install fonts-font-awesome
 wget https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/FiraCode.zip
 unzip FiraCode.zip -d /home/$username/.fonts
 wget https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/Meslo.zip
@@ -101,7 +91,7 @@ if z=$(curl -s 'https://install.zerotier.com/' | gpg); then echo "$z" | sudo bas
 
 ### dmenu tools
 ###
-cd $HOME/.local/share/
+cd $HOME/.local/src
 git clone https://gitlab.com/dwt1/dmscripts.git
  cd dmscripts
  sudo make clean build
